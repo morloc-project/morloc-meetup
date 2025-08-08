@@ -1,5 +1,5 @@
 all:
-	morloc make toolbox.loc
+	morloc make -o toolbox toolbox.loc
 
 clean:
-	rm -rf nexus* pool* __pycache__
+	rm -rf nexus* pool* __pycache__ toolbox

@@ -1,4 +1,5 @@
-module toolbox (cal, trim, readFASTQ, writeFASTA)
+module toolbox (cal, d20, trim, readFASTQ, writeFASTA)
 
 import cally
+import dnd
 import trim
