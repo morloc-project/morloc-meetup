@@ -4,4 +4,5 @@ import types
 
 source Py from "cal.py" ("cal")
 
+--' Print a 3-month calendar and some timezones
 cal :: () -> ()

@@ -1,4 +1,4 @@
-module m (trim, readFASTQ, writeFASTA)
+module trim (trim, readFASTQ, writeFASTA)
 
 source Cpp from "foo.hpp" ("trimRead", "readFASTQ", "writeFASTA")
 
