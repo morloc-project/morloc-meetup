@@ -1,0 +1,7 @@
+module cally (cal)
+
+import types
+
+source Py from "cal.py" ("cal")
+
+cal :: () -> ()
