@@ -1,0 +1,8 @@
+module dnd (d20)
+
+import types
+
+source R from "dnd.R" ("d20")
+
+--' Roll n d20 dice
+d20 :: Int -> [Int]

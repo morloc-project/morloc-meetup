@@ -3,7 +3,6 @@ nexus.c
 pool*
 __pycache__
 toolbox
-dnd
 trim
 cal
 .RData
