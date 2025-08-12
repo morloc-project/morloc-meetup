@@ -1,33 +1,30 @@
 module trim (trim, readFASTQ, writeFASTA)
 
-source Cpp from "foo.hpp" ("trimRead", "readFASTQ", "writeFASTA")
+source Cpp from "trim.hpp" ("trimRead", "readFASTQ", "writeFASTA")
 
 -- defines Int, Str, List and Tuple types
 import types
 
--- for fst and snd
-import base
+import base (map, fst, snd)
 
 record Config = Config
     { minLength :: Int
-    , minQuality :: Int 
+    , minQuality :: Int
     }
 record Cpp => Config = "Config"
 
 --' Read a FASTQ file
 readFASTQ
     :: Str -- FASTQ filename
-    -> [ ( ( Str -- FASTQ header
-           , Str -- quality reads as phred scores
-           )
-         , Str -- read sequence
-         ) ]
+    -> [((Str, Str), Str)]
+
 
 --' Write a annotated sequence data to a FASTA file
 writeFASTA
     :: Str -- output filename
-    -> [(Str, Str)] -- list of headers and sequences
+    -> [(Str,Str)] -- list of headers and sequences
     -> Int -- exit code, 0 for success, 1 for failure
+
 
 --' Trim a single read
 trimRead
@@ -36,14 +33,21 @@ trimRead
     -> Str -- sequence
     -> Str -- trimmed sequence
 
-wrapRead :: Config -> ((Str, Str), Str) -> (Str, Str) 
-wrapRead config x = ( fst (fst x)
-             , trimRead config (snd (fst x)) (snd x)
-             )
+
+--' Apply a trimmer function to a FASTQ entry
+trimWrapper :: (   Str -- quality
+                -> Str -- sequence
+                -> Str -- trimmed sequence
+               )
+               -> ((Str, Str), Str)
+               -> (Str,Str)
+trimWrapper trimmer entry = (header, trimmer quality sequence)
+    where
+        header = (fst . fst) entry
+        quality = (snd . fst) entry
+        sequence = snd entry
+
 
 --' Trim a list of reads with phred quality scores
-trim
-    :: Config
-    -> [((Str, Str), Str)]
-    -> [(Str, Str)]
-trim config = map (wrapRead config) 
+trim :: Config -> [((Str, Str), Str)] -> [(Str,Str)]
+trim config = map (trimWrapper (trimRead config))

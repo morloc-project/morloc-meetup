@@ -6,3 +6,9 @@ source Py from "cal.py" ("cal")
 
 --' Print a 3-month calendar and some timezones
 cal :: () -> ()
+
+-- The type `()` represents the unit type, like None in Python
+-- The signature `() -> ()` describes a function that takes no arguments and returns nothing
+--   * Like `void foo();` prototype in C
+--   * The function is run for its side effects of printing calendar info
+-- The `--'` comment is a docstring, it will be propagated to the terminal

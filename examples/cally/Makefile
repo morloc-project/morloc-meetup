@@ -1,5 +1,5 @@
 all:
-	morloc make -o cally main.loc
+	morloc make main.loc
 
 run:
 	./nexus cal > /dev/null
