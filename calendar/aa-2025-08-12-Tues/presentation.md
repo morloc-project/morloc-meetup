@@ -15,8 +15,7 @@ Aug 12, 2025
 
 ## Purpose of Morloc
 
-*Morloc is programming language that composes functions across languages under a
-common type system*
+*Morloc is programming language that composes functions across languages under a common type system*
 
 ---
 
@@ -98,13 +97,13 @@ def mean(xs : list[float]) -> float:
 
 ## Meetup focus: practical use of Morloc in CLI tooling
 
- * Creation of light-weight, composable CLI tools
+ * (Week 1) Build light-weight, composable CLI tools
 
- * Configuring and specializing tools with records
+ * (Week 2) Configure and specialize tools
 
- * Working with performant data structures (e.g., numpy, tables, and matrices)
+ * (Week 3) Fancy data: binary, tables, matrices, and tensors
 
- * High-performance computing with SLURM
+ * (Week 4) Morloc as a workflow language (job submission, caching etc)
 
 
 ---
@@ -119,7 +118,7 @@ def mean(xs : list[float]) -> float:
 
  * walk through the code and explain new ideas
 
- * spark discussions
+ * answer questions and guide discussions
 
 ---
 
@@ -130,22 +129,20 @@ def mean(xs : list[float]) -> float:
 ### Your roles
 
  * be critical (ask why)
-
+ * be patient (Morloc is in beta, there are lots of sharp edges)
  * let me know if you find bugs, including:
    * unexpected behavior (normal bugs)
+   * poorly documented features
    * bad error messages
-   * undocumented behavior
    * anything that is more harder than it ought to be 
-   * any violation of the Morloc principles
-
- * if possible, take some time to tinker with Morloc on your own time
- * spread the word!
+ * share your work
 
 ---
 
 ## Today's agenda
 
  * Explore three simple CLI tools
- * Compose them into one
+ * Compose them together to make one tool
+ * In the following weeks we'll build on this tool
 
 ---
