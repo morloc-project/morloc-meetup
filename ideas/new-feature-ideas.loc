@@ -1,0 +1,158 @@
+
+-- Multiline strings
+
+verbatimStr =
+    ```{verbatim}
+    This is a verbatim string
+      where all spaces are preserved exactly
+    ```
+
+sourceStr =
+    ```{source, lang=R}
+    r10d6 <- function(x){
+        runif(10, n=6, replace=TRUE)
+    }
+    ```
+
+interpolatedStr :: Str -> Str
+interpolatedStr x =
+    ```{fstart="#{", fend="}"}
+    This is a string
+    that uses #{join ["'", x, "'"]}
+    ```
+
+-- String interpolation
+helloYou :: Str -> Str
+helloYou x = "hello {x}"
+
+
+
+--------------------------------------- 
+-- Simplified records
+
+-- old syntax:
+record AiConfig a = AiConfig
+  { model :: Str
+  , systemPrompt :: Str
+  , tokenFile :: Filename
+  , other :: a
+  }
+
+-- possible new syntax:
+record AiConfig a where
+  model :: Str
+  systemPrompt :: Str
+  tokenFile :: Filename
+  other :: a
+
+
+--------------------------------------- 
+-- record defaults, entry docstrings and CLI argument specifications
+
+--' Configuration for an LLM model
+record AiConfig a where
+  --' the model name
+  --' arg: -m/--model
+  --' example: gpt-3.5
+  model :: Str
+
+  --' the system prompt
+  --'
+  --' Here are some more detailed
+  --' description of this argument.
+  --'
+  --' arg: --system-prompt
+  --' maybe-text-file: true
+  systemPrompt :: Str
+
+  --' the name of a file that contains the token for this model
+  --' arg: -t/--token-file
+  tokenFile :: Filename
+
+  --' generic additional data that is specific to the model
+  --' arg: --metadata
+  other :: a
+
+-- The docstring first line is used in the detailed subcommand help to describe
+-- the argument. `arg` sets the variable labels. If a function is exported that
+-- uses AiConfig, the CLI arguments may be used instead of providing a record.
+
+
+--------------------------------------- 
+-- record updates
+
+updateModel :: Str -> AiConfig -> AiConfig
+updateModel newModel config =
+    { config
+    | model = newModel
+    , systemPrompt = "Respond as a sarcastic gen-Z smart-ass"
+    }
+
+
+--------------------------------------- 
+-- record and tuple access functions
+
+-- generate @<fieldname> and @<tuple-index> functions for access
+
+foo :: AiConfig -> [(Str, Str)] -> (Filename, [Str])
+foo config tup = (@tokenFile config, map @2 tup)
+
+-- The tuple accessors will work for all tuple lengths, their type will be
+-- inferred at compile time. Built-in support for tuple access will be needed.
+
+
+--------------------------------------- 
+-- cleaner source
+
+-- current
+source Py from "foo.py" ("foo" as foo)
+source Py ("map")
+
+-- possible new syntax:
+source Py ("map")
+source Py ("foo" as foo) from "foo.py"
+source Py ("foo" as foo) from
+    ```{source, lang=python}
+    def foo(x):
+        ...
+    ```
+
+-- switching the "from" to the end:
+--  * more naturally allows support for Python blocks
+--  * more closely matches SQL conventions, where the returned values are listed first
+
+-- Eventually, import should also be modified to support more query-like syntax:
+import (foo)
+    from my.mod
+    where lang foo == Python
+
+
+--------------------------------------- 
+-- infix operators
+
+class Mul a where
+ infixl 6 *
+ (*) a :: a -> a -> Bool 
+ 
+--------------------------------------- 
+-- patterns and guards
+
+-- pattern-matching
+foo :: (a, b) -> a
+foo | (a, _) = a
+
+bar :: (Bool, a, a) -> a
+bar | (True,  x, _) = x
+bar | (False, _, y) = y
+
+-- guards
+baz :: Int -> Str
+baz x ? x > 10  = "large" 
+      ? x == 10 = "medium"
+      ? x < 10  = "small"
+
+-- Patterns and guards would both require language-specific code generation.
+
+-- With pattern matching Morloc becomes a complete language where data
+-- structures and be constructed and deconstructed. The addition of a few builtin
+-- operators and guards completes the language for pure function definition.
