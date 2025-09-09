@@ -30,7 +30,7 @@ helloYou x = "hello {x}"
 --------------------------------------- 
 -- Simplified records
 
--- old syntax:
+-- old syntax ------
 record AiConfig a = AiConfig
   { model :: Str
   , systemPrompt :: Str
@@ -38,13 +38,19 @@ record AiConfig a = AiConfig
   , other :: a
   }
 
--- possible new syntax:
+-- specify the constructor for the Python record (usually a dictionary)
+record Py => AiConfig a = "dict" a
+
+-- possible new syntax ------
 record AiConfig a where
   model :: Str
   systemPrompt :: Str
   tokenFile :: Filename
   other :: a
 
+-- I can keep the same convention here, eventually may need to add some language
+-- specific info, such as alternative names for fields
+record Py => AiConfig a = "dict" a
 
 --------------------------------------- 
 -- record defaults, entry docstrings and CLI argument specifications
