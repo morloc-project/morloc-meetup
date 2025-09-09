@@ -1,4 +1,4 @@
 module toolbox (*)
 
-import cally
-import dnd
+import cally (cal)
+import dnd (d20)
